@@ -231,7 +231,8 @@
 			// check content dir exits and writable
 			if(file_exists(APPPATH.'controllers/cms.php') &&
 				is_dir(BASEPATH.'../content') &&
-				is_writable(BASEPATH.'../content')){
+				is_writable(BASEPATH.'../content') &&
+				is_dir(BASEPATH.'../themes')){
 				return TRUE;
 			}
 
@@ -255,33 +256,40 @@
 			if((is_writable(BASEPATH.'../') &&
 				mkdir(BASEPATH.'../content/')) || 
 				is_dir(BASEPATH.'../content/')){
-				// copy controller
+				// copy themes
 				if(is_writable(APPPATH.'controllers/') &&
-					copy('../controllers/cms.php', APPPATH.'controllers/cms.php')) {
-					// double check install worked and change config file
-					if($this->is_installed()){
-						$this->CI->load->helper('file');
-						$config = read_file(BASEPATH.'../sparks/sandcastle-cms/'.$this->version.'/config/sandcastle_cms.php');
-						$config = str_replace('$config[\'sandcastle_cms\'][\'is_installed\'] = FALSE;', '$config[\'sandcastle_cms\'][\'is_installed\'] = FALSE;', $config);
+					copy('../themes', APPPATH.'../themes')) {
+					// copy controller
+					if(is_writable(APPPATH.'controllers/') &&
+						copy('../controllers/cms.php', APPPATH.'controllers/cms.php')) {
+						// double check install worked and change config file
+						if($this->is_installed()){
+							$this->CI->load->helper('file');
+							$config = read_file(BASEPATH.'../sparks/sandcastle-cms/'.$this->version.'/config/sandcastle_cms.php');
+							$config = str_replace('$config[\'sandcastle_cms\'][\'is_installed\'] = FALSE;', '$config[\'sandcastle_cms\'][\'is_installed\'] = FALSE;', $config);
 
-						// write changes to config and check
-						if(!write_file(BASEPATH.'../sparks/sandcastle-cms/'.$this->version.'/config/sandcastle_cms.php')){
-							show_error('Failed to update config file. Please set <code>$config[\'sandcastle_cms\'][\'is_installed\'] = TRUE;</code>.');
-							return FALSE;
+							// write changes to config and check
+							if(!write_file(BASEPATH.'../sparks/sandcastle-cms/'.$this->version.'/config/sandcastle_cms.php')){
+								show_error('Failed to update config file. Please set <code>$config[\'sandcastle_cms\'][\'is_installed\'] = TRUE;</code>.');
+								return FALSE;
+							}
+
+							return TRUE;
 						}
-
-						return TRUE;
+						else {
+							show_error('Unknown installation error.');
+						}
 					}
 					else {
-						show_error('Unknown installation error.');
+						show_error('Failed to copy <code>./sparks/sandcastle-cms/'.$this->version.'/controllers/cms.php</code> to <code>./application/controllers/cms.php</code>');
 					}
 				}
 				else {
-					show_error('Failed to copy <code>./sparks/sandcastle-cms/'.$this->version.'/controllers/cms.php</code> to <code>./application/controllers/cms.php</code>.');
+					how_error('Failed to copy <code>./sparks/sandcastle-cms/'.$this->version.'/themes</code> to <code>./themes</code>');
 				}
 			}
 			else {
-				show_error('Failed to create <code>./content/</code>.');
+				show_error('Failed to create <code>./content/</code>');
 			}
 
 			// reset some folder perms
