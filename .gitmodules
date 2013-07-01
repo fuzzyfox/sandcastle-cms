@@ -1,0 +1,6 @@
+[submodule "vendor/php-markdown"]
+	path = vendor/php-markdown
+	url = https://github.com/michelf/php-markdown.git
+[submodule "vendor/twig"]
+	path = vendor/twig
+	url = https://github.com/fabpot/Twig.git
