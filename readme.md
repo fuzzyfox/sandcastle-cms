@@ -31,7 +31,7 @@ Should the automated installation not work (usual due to permissions) you can ma
 	cp ./sparks/sandcastle-cms/$VERSION/controllers/cms.php ./$APPPATH/controllers/cms.php
 	
 	CONFIG=`cat ./sparks/sandcastle-cms/$VERSION/config/sandcastle_cms.php`
-	echo ${$CONFIG/"['is_installed'] = FALSE"/"['is_installed'] = TRUE"} > ./sparks/sandcastle-cms/$VERSION/config/sandcastle_cms.php
+	echo ${CONFIG/FALSE/TRUE} > ./sparks/sandcastle-cms/$VERSION/config/sandcastle_cms.php
 
 Once you've done that you should be able to point your browser to `www.yourdomain.com/path/to/codeigniter/cms/test` and be greated with a document outlining [Markdown](http://daringfireball.net/projects/markdown/).
 
