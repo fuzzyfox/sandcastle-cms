@@ -257,11 +257,13 @@
 				mkdir(BASEPATH.'../content/')) || 
 				is_dir(BASEPATH.'../content/')){
 				// copy themes
-				if(is_writable(APPPATH.'controllers/') &&
-					copy('../themes', APPPATH.'../themes')) {
+				if((is_writable(BASEPATH.'../') &&
+					copy('../themes/', BASEPATH.'../themes/')) ||
+					is_dir(BASEPATH.'../themes/')) {
 					// copy controller
-					if(is_writable(APPPATH.'controllers/') &&
-						copy('../controllers/cms.php', APPPATH.'controllers/cms.php')) {
+					if((is_writable(APPPATH.'controllers/') &&
+						copy('../controllers/cms.php', APPPATH.'controllers/cms.php')) ||
+						file_exists(APPPATH.'controllers/cms.php')) {
 						// double check install worked and change config file
 						if($this->is_installed()){
 							$this->CI->load->helper('file');
@@ -285,7 +287,7 @@
 					}
 				}
 				else {
-					how_error('Failed to copy <code>./sparks/sandcastle-cms/'.$this->version.'/themes</code> to <code>./themes</code>');
+					show_error('Failed to copy <code>./sparks/sandcastle-cms/'.$this->version.'/themes</code> to <code>./themes</code>');
 				}
 			}
 			else {

@@ -6,7 +6,7 @@
 		public function __construct(){
 			parent::__construct();
 			// load the spark
-			$this->load->spark('sandcastle-cms/0.1.0');
+			$this->load->spark('sandcastle-cms/0.1.2');
 
 			// load markdown library
 			$this->markdown =& $this->cms_lib->get_markdown_instance();
